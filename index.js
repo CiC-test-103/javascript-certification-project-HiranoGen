@@ -23,7 +23,7 @@ function main() {
       - remove [email]: Remove a student by email
       - display: Show all students
       - find [email]: Find a student by email
-      - save: Save the current linked list to the specified file
+      - save [fileName]: Save the current linked list to the specified file
       - load [fileName]: Load a linked list from a file
       - clear: Clear the current linked list
       - q: Quit the terminal
@@ -48,6 +48,10 @@ async function handleCommand(command) {
         const [name, year, email, specialization] = args
         // --------> WRITE YOUR CODE BELOW
 
+        const newStudent = new Student(name, year, email, specialization);
+        console.log(studentManagementSystem.addStudent(newStudent));
+        console.log(studentManagementSystem.displayStudents());
+
         // --------> WRITE YOUR CODE ABOVE
         break;
 
@@ -62,7 +66,11 @@ async function handleCommand(command) {
        */
       console.log('Removing student...')
       // --------> WRITE YOUR CODE BELOW
-      
+
+      const removeEmail = args[0];
+      console.log(studentManagementSystem.removeStudent(removeEmail));
+      console.log(studentManagementSystem.displayStudents());
+
       // --------> WRITE YOUR CODE ABOVE
       break;
 
@@ -75,6 +83,8 @@ async function handleCommand(command) {
        */
       console.log('Displaying students...')
       // --------> WRITE YOUR CODE BELOW
+
+      console.log(studentManagementSystem.displayStudents());
 
       // --------> WRITE YOUR CODE ABOVE
       break;
@@ -91,7 +101,15 @@ async function handleCommand(command) {
        */
       console.log('Finding student...')
       // --------> WRITE YOUR CODE BELOW
-      
+
+      const findEmail = args[0];
+      const student = studentManagementSystem.findStudent(findEmail);
+      if (student === -1) {
+        console.log("Student does not exist");
+      } else {
+        console.log(student.getString());
+      }
+
       // --------> WRITE YOUR CODE ABOVE
       break;
 
@@ -104,10 +122,17 @@ async function handleCommand(command) {
        *   - Grab the args (saveFileName)
        *   - Use implemented functions in LinkedList to save the data
        */
-      console.log('Saving data...')
+
+      console.log('saving data...');
       // --------> WRITE YOUR CODE BELOW
 
+      const saveFileName = args [0];
+      await studentManagementSystem.saveToJson(saveFileName);
+
       // --------> WRITE YOUR CODE ABOVE
+      // At the end of the 'save' case in the terminal commands, please add a 'break;'. 
+      // It should be present as in the other cases, but is missing
+      break;
 
     case "load":
       /**
@@ -120,6 +145,9 @@ async function handleCommand(command) {
        */
       console.log('Loading data...')
       // --------> WRITE YOUR CODE BELOW
+
+      const loadFileName = args[0];
+      await studentManagementSystem.loadFromJSON(loadFileName);
 
       // --------> WRITE YOUR CODE ABOVE
       break;
@@ -134,6 +162,9 @@ async function handleCommand(command) {
        */
       console.log('Clearing data...')
       // --------> WRITE YOUR CODE BELOW
+
+      studentManagementSystem.clearStudents();
+      console.log(studentManagementSystem.displayStudents());
 
       // --------> WRITE YOUR CODE ABOVE
       break;
